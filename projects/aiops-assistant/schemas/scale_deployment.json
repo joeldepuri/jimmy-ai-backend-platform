@@ -1,0 +1,54 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Deployment Scaler",
+    "version": "1.0.0",
+    "description": "Scales a Kubernetes deployment to a specified number of replicas"
+  },
+  "paths": {
+    "/scale_deployment": {
+      "post": {
+        "summary": "Scale a Kubernetes deployment",
+        "description": "Changes the replica count of a deployment. Scale up under high load (e.g. set to 3) or down to save resources. Always include a reason for audit trail.",
+        "operationId": "scale_deployment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["deployment_name", "replicas"],
+                "properties": {
+                  "deployment_name": { "type": "string", "description": "Deployment to scale (e.g. order-service, frontend)" },
+                  "replicas":        { "type": "integer", "minimum": 1, "maximum": 10 },
+                  "namespace":       { "type": "string", "default": "boutique" },
+                  "cluster_name":    { "type": "string", "default": "eks-cluster" },
+                  "reason":          { "type": "string", "description": "Reason for scaling (logged for audit)" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scale result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status":            { "type": "string" },
+                    "deployment":        { "type": "string" },
+                    "previous_replicas": { "type": "integer" },
+                    "new_replicas":      { "type": "integer" },
+                    "reason":            { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

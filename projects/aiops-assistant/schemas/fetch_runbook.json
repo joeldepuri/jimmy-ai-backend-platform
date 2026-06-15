@@ -1,0 +1,43 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Runbook Fetcher",
+    "version": "1.0.0",
+    "description": "Fetches the relevant runbook from S3 for a given incident type"
+  },
+  "paths": {
+    "/fetch_runbook": {
+      "get": {
+        "summary": "Fetch runbook from S3",
+        "description": "Retrieves the runbook for an incident type from the S3 runbook repository. Always call this BEFORE taking any remediation action so you follow the correct procedure. Types: pod-crashloop, high-cpu, oom-killed, database-connection, deployment-unavailable, image-pull-error.",
+        "operationId": "fetch_runbook",
+        "parameters": [
+          {
+            "name": "incident_type",
+            "in": "query",
+            "required": true,
+            "description": "Incident type string, e.g. pod-crashloop, high-cpu, oom-killed, database-connection",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Runbook content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status":       { "type": "string" },
+                    "runbook_key":  { "type": "string" },
+                    "content":      { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+kustomize:
+  images:
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/auth:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/gateway:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/orders:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/order-service:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/product-service:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/user-service:f8481b2b9dca24082f31b4b1a5c79418a00a67b9
+  - 522814724315.dkr.ecr.us-east-1.amazonaws.com/frontend:f8481b2b9dca24082f31b4b1a5c79418a00a67b9

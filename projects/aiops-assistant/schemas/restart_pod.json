@@ -1,0 +1,50 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pod Restart",
+    "version": "1.0.0",
+    "description": "Restarts a Kubernetes pod by deleting it — Kubernetes reschedules it automatically"
+  },
+  "paths": {
+    "/restart_pod": {
+      "post": {
+        "summary": "Restart a pod or all pods for a deployment",
+        "description": "Deletes a specific pod (or all pods for a deployment) so Kubernetes reschedules them fresh. Use when a pod is CrashLoopBackOff, OOMKilled, or stuck. Provide pod_name for a single pod, or deployment_name to restart all pods in that deployment.",
+        "operationId": "restart_pod",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pod_name":        { "type": "string", "description": "Exact pod name (e.g. order-service-79d58588c-866f6)" },
+                  "deployment_name": { "type": "string", "description": "Deployment name prefix to restart all its pods (e.g. order-service)" },
+                  "namespace":       { "type": "string", "default": "boutique" },
+                  "cluster_name":    { "type": "string", "default": "eks-cluster" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restart result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status":         { "type": "string" },
+                    "pods_restarted": { "type": "array", "items": { "type": "string" } },
+                    "message":        { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

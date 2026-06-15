@@ -1,0 +1,52 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Incident Reporter",
+    "version": "1.0.0",
+    "description": "Sends a structured incident report via SNS (email to on-call)"
+  },
+  "paths": {
+    "/send_incident_report": {
+      "post": {
+        "summary": "Send incident report via SNS",
+        "description": "Publishes a formatted incident report to the SNS topic which delivers to the on-call email. Always call this LAST, after investigation and remediation are complete. Include root cause, every action taken, and final resolution status.",
+        "operationId": "send_incident_report",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["incident_summary", "severity", "affected_service"],
+                "properties": {
+                  "incident_summary":  { "type": "string" },
+                  "severity":          { "type": "string", "enum": ["critical","high","medium","low","info"] },
+                  "affected_service":  { "type": "string" },
+                  "root_cause":        { "type": "string" },
+                  "actions_taken":     { "type": "string" },
+                  "resolution_status": { "type": "string", "enum": ["resolved","mitigated","investigating","escalated"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status":     { "type": "string" },
+                    "message_id": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

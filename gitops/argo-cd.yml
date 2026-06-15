@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: boutique
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: >-
+      auth=522814724315.dkr.ecr.us-east-1.amazonaws.com/auth,
+      gateway=522814724315.dkr.ecr.us-east-1.amazonaws.com/gateway,
+      orders=522814724315.dkr.ecr.us-east-1.amazonaws.com/orders,
+      order-service=522814724315.dkr.ecr.us-east-1.amazonaws.com/order-service,
+      product-service=522814724315.dkr.ecr.us-east-1.amazonaws.com/product-service,
+      user-service=522814724315.dkr.ecr.us-east-1.amazonaws.com/user-service,
+      frontend=522814724315.dkr.ecr.us-east-1.amazonaws.com/frontend
+    argocd-image-updater.argoproj.io/auth.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/gateway.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/orders.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/order-service.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/product-service.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/user-service.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/frontend.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/auth.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/gateway.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/orders.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/order-service.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/product-service.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/user-service.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/frontend.pull-secret: pullsecret:argocd/ecr-pull-secret
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: project-demo
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/joeldepuri/devops-aiops-platform.git'
+    targetRevision: project-demo
+    path: gitops
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: boutique
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
